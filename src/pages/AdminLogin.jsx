@@ -19,7 +19,7 @@ const AdminLogin = () => {
     try {
       const { data } = await axios.post('http://localhost:5000/api/auth/admin/login', form);
       login(data.user, data.token);
-      toast.success(`Welcome back, ${data.user.username}!`);
+      toast.success(`You Logged in as Admin ${data.user.username}!`);
       navigate('/admin/dashboard');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Invalid credentials');

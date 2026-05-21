@@ -1,20 +1,17 @@
 import { useState } from 'react';
-import { X, Plus, Minus, Trash2, ShoppingBag, ZoomIn } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ShoppingBag, ZoomIn, CreditCard } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const CartSidebar = ({ isOpen, onClose }) => {
-  const { cart, updateQuantity, removeFromCart, clearCart, cartTotal } = useCart();
-  const { user, token } = useAuth();
+  const { cart, updateQuantity, removeFromCart, cartTotal } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [address, setAddress] = useState('');
-  const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (!user) {
       toast.error('Please login to place an order');
       navigate('/login');
@@ -22,34 +19,13 @@ const CartSidebar = ({ isOpen, onClose }) => {
       return;
     }
 
-    if (!address.trim()) {
-      toast.error('Please enter a delivery address');
+    if (cart.length === 0) {
+      toast.error('Cart is empty');
       return;
     }
 
-    setLoading(true);
-    try {
-      const orderItems = cart.map(item => ({
-        menu_item_id: item.id,
-        quantity: item.quantity
-      }));
-
-      await axios.post(
-        'http://localhost:5000/api/orders',
-        { items: orderItems, delivery_address: address },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      toast.success('Order placed successfully!');
-      clearCart();
-      setAddress('');
-      onClose();
-      navigate('/orders');
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to place order');
-    } finally {
-      setLoading(false);
-    }
+    onClose();
+    navigate('/checkout');
   };
 
   const handleQuantityInput = (itemId, value) => {
@@ -96,7 +72,6 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 return (
                   <div key={item.id} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-3">
                     <div className="flex items-start space-x-3">
-                      {/* Clickable image for preview */}
                       <div className="relative group cursor-pointer" onClick={() => setPreviewImage(item.image_url)}>
                         <img
                           src={item.image_url}
@@ -113,7 +88,6 @@ const CartSidebar = ({ isOpen, onClose }) => {
                         <h4 className="font-semibold text-gray-800 dark:text-white text-sm truncate">{item.name}</h4>
                         <p className="text-orange-500 font-bold">${itemPrice.toFixed(2)}</p>
                         
-                        {/* Quantity with editable input */}
                         <div className="flex items-center space-x-2 mt-2">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -122,14 +96,13 @@ const CartSidebar = ({ isOpen, onClose }) => {
                             <Minus className="h-4 w-4 text-gray-700 dark:text-gray-300" />
                           </button>
                           
-                          {/* Editable quantity field */}
                           <input
                             type="number"
                             min="1"
                             max="9999"
                             value={item.quantity}
                             onChange={(e) => handleQuantityInput(item.id, e.target.value)}
-                            className="w-16 h-8 text-center font-bold text-sm border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 bg-white dark:bg-gray-700 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-16 h-8 text-center font-bold text-sm border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 bg-white dark:bg-gray-700 dark:text-white"
                           />
                           
                           <button
@@ -163,27 +136,22 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 <span className="text-orange-500">${Number(cartTotal).toFixed(2)}</span>
               </div>
 
-              <textarea
-                placeholder="Enter delivery address..."
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-gray-800 dark:text-white border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-orange-500 resize-none text-sm h-20"
-                rows="2"
-              />
-
               <button
                 onClick={handleCheckout}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-orange-500/30 flex items-center justify-center space-x-2"
               >
-                {loading ? 'Placing Order...' : 'Place Order'}
+                <CreditCard className="h-5 w-5" />
+                <span>Proceed to Checkout</span>
               </button>
+
+              <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+                🔒 Secure payment with Stripe
+              </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Image Preview Modal */}
       {previewImage && (
         <div 
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4"

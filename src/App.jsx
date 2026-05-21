@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import Menu from './pages/Menu';
 import Orders from './pages/Orders';
 import Profile from './pages/Profile';
+import Checkout from './pages/Checkout';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import CustomerNavbar from './components/CustomerNavbar';
@@ -57,6 +58,11 @@ function App() {
               <Route path="/profile" element={
                 <ProtectedRoute role="customer">
                   <CustomerLayout><Profile /></CustomerLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/checkout" element={
+                <ProtectedRoute role="customer">
+                  <CustomerLayout><Checkout /></CustomerLayout>
                 </ProtectedRoute>
               } />
 

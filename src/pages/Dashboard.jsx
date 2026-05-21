@@ -62,13 +62,13 @@ const Dashboard = () => {
             <div className="text-white">
               <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-3 py-1 mb-3">
                 <Sparkles className="h-4 w-4" />
-                <span className="text-sm font-semibold">Welcome back!</span>
+                <span className="text-sm font-semibold">You're welcome to QuickBite</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-2 drop-shadow-2xl">
-                Hi, {user?.fullname?.split(' ')[0]}! 
+                {user?.fullname?.split(' ')[0]}, 
               </h1>
               <p className="text-orange-100 text-lg drop-shadow-lg">
-                What would you like to order today?
+                what would you like to order today?
               </p>
             </div>
 

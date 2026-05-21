@@ -19,7 +19,7 @@ const Login = () => {
     try {
       const { data } = await axios.post('http://localhost:5000/api/auth/login', form);
       login(data.user, data.token);
-      toast.success(`Welcome back, ${data.user.fullname}! 🎉`);
+      toast.success(`${data.user.fullname} Logged in!`);
       navigate('/dashboard');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed');
@@ -57,7 +57,7 @@ const Login = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-md rounded-full mb-3 border border-white/30">
                   <LogIn className="h-8 w-8 text-white" />
                 </div>
-                <h1 className="text-3xl font-bold text-white">Welcome Back!</h1>
+                <h1 className="text-3xl font-bold text-white">Login to QuickBite</h1>
                 <p className="text-orange-100 mt-2">Sign in to continue ordering</p>
               </div>
             </div>

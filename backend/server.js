@@ -9,6 +9,7 @@ const menuRoutes = require('./routes/menu');
 const orderRoutes = require('./routes/orders');
 const uploadRoutes = require('./routes/upload');
 const customerRoutes = require('./routes/customers');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/customers', customerRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.get('/', (req, res) => res.json({ message: 'QuickBite API running!' }));
 app.get('/api/health', (req, res) => res.json({ message: 'Healthy!' }));

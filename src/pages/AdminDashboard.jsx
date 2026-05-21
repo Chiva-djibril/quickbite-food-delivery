@@ -318,9 +318,9 @@ const AdminDashboard = () => {
                     <div className="p-8 text-white">
                       <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-3 py-1 mb-3">
                         <Sparkles className="h-4 w-4" />
-                        <span className="text-sm font-semibold">Welcome back, Admin!</span>
+                        <span className="text-sm font-semibold">Admin,{user?.username} </span>
                       </div>
-                      <h2 className="text-3xl font-bold mb-2">Hi, {user?.username}! </h2>
+                      { /*<h2 className="text-3xl font-bold mb-2">Hi, {user?.username}! </h2> */}
                       <p className="text-orange-50">Here's what's happening with QuickBite today</p>
                     </div>
                   </div>
