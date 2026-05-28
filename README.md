@@ -576,5 +576,5 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 ---
 
 <p align="center">
-  Made by Djibril Chiva
+  Developed by Djibril Chiva
 </p>
